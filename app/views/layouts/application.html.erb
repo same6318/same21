@@ -12,8 +12,8 @@
   <body>
     <p id="notice"><%= notice %></p> <%# このpでフラッシュメッセージ%>
     <ul>
-      <li><%= link_to "Tasks Index", tasks_path, id: "tasks-index" %></li>
-      <li><%= link_to "New Task", new_task_path, id: "new-task" %></li>
+      <li><%= link_to t("tasks.index.task"), tasks_path, id: "tasks-index" %></li>
+      <li><%= link_to t("tasks.index.new"), new_task_path, id: "new-task" %></li>
     </ul>
     <%= yield %>
   </body>
