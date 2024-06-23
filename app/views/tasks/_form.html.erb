@@ -11,9 +11,9 @@
 
   <div class="action">
     <% if @task.new_record? %>
-      <%= form.submit "Create Task", id: "create-task" %>
+      <%= form.submit id: "create-task" %>
     <% else %>
-      <%= form.submit "Update Task", id: "update-task" %>
+      <%= form.submit id: "update-task" %>
     <% end %>
   </div>
 <% end %>

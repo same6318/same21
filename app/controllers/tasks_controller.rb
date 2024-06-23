@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all
+    @tasks = Task.all.page(params[:page]).per(10) #ページネーションさせるデータに.page(params[:page])を追加
   end
 
   def new
@@ -12,7 +12,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      flash[:notice] = "Task was successfully created."
+      flash[:notice] = t('.created')
       redirect_to tasks_path
     else
       flash.now[:notice] = "タスクの作成に失敗しました"
@@ -28,7 +28,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      flash[:notice] = "Task was successfully updated."
+      flash[:notice] = t('.updated')
       redirect_to task_path(@task)
     else
       flash.now[:notice] = "タスクの更新に失敗しました"
@@ -38,7 +38,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    flash[:notice] = "Task was successfully destroyed."
+    flash[:notice] = t('.destroyed')
     redirect_to tasks_path
   end
 

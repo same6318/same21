@@ -1,0 +1,59 @@
+ja:
+  activerecord:
+    models:
+      task: タスク
+      user: ユーザー
+    attributes:
+      task:
+        title: タイトル
+        content: 内容
+        created_at: 作成日時
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: を入力してください
+  helpers:
+    submit:
+      create: 登録する
+      update: 更新する
+  common:
+    new: 新規作成
+    show: 詳細
+    edit: 編集
+    destroy: 削除
+    back: 戻る
+    confirm_destroy: 本当に削除してもよろしいですか？
+  tasks:
+    index:
+      title: タスク一覧ページ
+      task: タスク一覧
+      new: タスクを登録する
+    new:
+      title: タスク登録ページ
+    edit:
+      title: タスク編集ページ
+    show:
+      title: タスク詳細ページ
+    create:
+      created: タスクを登録しました
+    update:
+      updated: タスクを更新しました
+    destroy:
+      destroyed: タスクを削除しました
+  users:
+    new:
+      title: ユーザー登録ページ
+    edit:
+      title: ユーザー編集ページ
+    show:
+      title: ユーザー詳細ページ
+      name: 名前
+      email: メールアドレス
+  time:
+    formats:
+      defauls: "%Y/%m/%d %H:%M:%S"

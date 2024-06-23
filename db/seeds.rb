@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+50.times do |i|
+  unless Task.find_by(title: "TaskTEST#{i+1}")
+  Task.create!(title:"TaskTEST#{i+1}", content:"SEEDで作成#{i+1}")
+  end
+end
