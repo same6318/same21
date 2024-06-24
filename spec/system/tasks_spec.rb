@@ -41,9 +41,9 @@ RSpec.describe "Tasks", type: :system do
 
 
       it "作成済みのタスク一覧が作成日時の降順で表示される" do
-        task_list = all("tbody tr")
-        task_dates = task_list.map do |task| 
-          task.text.match(/\d{4}\/\d{2}\/\d{2}/)[0]
+        task_dates = all("tbody tr").map do |task| 
+          task.text.match(/\d{4}\/\d{2}\/\d{2}/)[0] #[0]を記載しないとMatchDateオブジェクトが返るだけ。
+          #(/\d{4}\/\d{2}\/\d{2}/に一致したものだけをMatchDataオブジェクトとして返す＝要素は1個だけだが、[0]で指定してないと取り出しは不可)
         end
         #binding.irb
         expect(task_dates).to eq ["2022/02/18", "2022/02/17", "2022/02/16"]
@@ -60,12 +60,13 @@ RSpec.describe "Tasks", type: :system do
       end
       it "新しいタスクが一番上に表示される" do
         tasks = all("tbody tr")
-        task_titles = tasks.map { |task| task.find("td", match: :first).text }
+        # task_titles = tasks.map { |task| task.find("td", match: :first).text }
+        task_titles = tasks.map do |task|
+          task.find("td", match: :first).text
+        end
         #binding.irb
         expect(task_titles).to eq ["TEST3","TEST2","TEST"]
         expect(task_titles).not_to eq ["TEST","TEST2","TEST3"]
-        # expect(task_titles).to match %r{#{third_task.title}.*#{second_task.title}.*#{task.title}}
-        # expect(task_titles).not_to match %r{#{task.title}.*#{second_task.title}.*#{third_task.title}}
       end
     end
   end
@@ -79,6 +80,8 @@ RSpec.describe "Tasks", type: :system do
        end
      end
   end
+
+
 
 end
   # before do

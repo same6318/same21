@@ -2,7 +2,23 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all.page(params[:page]).per(10) #ページネーションさせるデータに.page(params[:page])を追加
+    # @tasks = Task.all.created_at_sort.page(params[:page]).per(10) #ページネーションさせるデータに.page(params[:page])を追加
+    if @search_params = task_search_params
+      #binding.irb
+      @tasks = Task.search(@search_params).created_at_sort.page(params[:page]).per(10)
+    elsif params[:deadline_asc_sort]
+      @tasks = Task.deadline_asc_sort
+    else params[:priority_high_sort]
+      @tasks = Task.priority_high_sort
+    end
+    # binding.irb
+    # if params[:deadline_asc_sort]
+    #   @tasks = Task.deadline_asc_sort
+    # elsif params[:priority_high_sort]
+    #   @tasks = Task.priority_high_sort
+    # else
+      
+    # end
   end
 
   def new
@@ -47,11 +63,15 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :content)
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
   end
 
   def set_task
     @task = Task.find(params[:id])
+  end
+
+  def task_search_params
+    params.fetch(:search, {}).permit(:title, :status)
   end
 
 end

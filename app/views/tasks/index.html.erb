@@ -1,20 +1,36 @@
 <h1><%= t('.title') %></h1>
 
+<%# 検索実行時に非同期通信しないので、locl: trueにしている%>
+<%= form_with(scope: :search, url: tasks_path, method: :get, local: true) do |form| %>
+  <%= form.label :status, I18n.t("activerecord.attributes.task.status") %>
+  <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true } %>
+  <%= form.label :title, I18n.t("activerecord.attributes.task.title") %>
+  <%= form.text_field :title, value: @search_params[:title] %>
+  <%= form.submit "検索", id: "search_task" %>
+<% end %>
+
+
 <table>
   <thead>
     <tr>
       <th><%= Task.human_attribute_name(:title) %></th>
       <th><%= Task.human_attribute_name(:content) %></th>
       <th><%= Task.human_attribute_name(:created_at) %></th>
+      <th><%= link_to Task.human_attribute_name(:deadline_on), tasks_path(deadline_asc_sort: "true") %></th>
+      <th><%= link_to Task.human_attribute_name(:priority), tasks_path(priority_high_sort: "true") %></th>
+      <th><%= Task.human_attribute_name(:status) %></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @tasks.order(created_at: :desc).each do |task| %>
+    <% @tasks.each do |task| %>
       <tr>
         <td><%= task.title %></td>
         <td><%= task.content %></td>
         <td><%= task.created_at.strftime('%Y/%m/%d %H:%M') %></td>
+        <td><%= task.deadline_on %></td>
+        <td><%= I18n.t("activerecord.enums.priority.#{task.priority}") %></td>
+        <td><%= I18n.t("activerecord.enums.status.#{task.status}") %></td>
         <td><%= link_to t('common.show'), task_path(task), class: "show-task" %></td>
         <td><%= link_to t('common.edit'), edit_task_path(task), class: "edit-task" %></td>
         <td><%= link_to t('common.destroy'), task, method: :delete, data: { confirm: t('common.confirm_destroy') }, class: "destroy-task" %></td>
