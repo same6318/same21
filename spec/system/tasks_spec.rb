@@ -161,7 +161,7 @@ RSpec.describe "Tasks", type: :system do
      context '任意のタスク詳細画面に遷移した場合' do
        it 'そのタスクの内容が表示される' do
         task = FactoryBot.create(:second_task)
-        visit tasks_path
+        visit task_path(task)
         expect(page).to have_text("TEST2")
        end
      end
