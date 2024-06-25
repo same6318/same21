@@ -7,8 +7,14 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-50.times do |i|
-  unless Task.find_by(title: "TaskTEST#{i+1}")
-  Task.create!(title:"TaskTEST#{i+1}", content:"SEEDで作成#{i+1}")
-  end
-end
+# 50.times do |i|
+#   unless Task.find_by(title: "TaskTEST#{i+1}")
+#   Task.create!(title:"TaskTEST#{i+1}", content:"SEEDで作成#{i+1}")
+#   end
+# end
+
+require 'factory_bot_rails'
+
+FactoryBot.create_list(:task, 3) unless Task.find_by(title: "TEST")
+FactoryBot.create_list(:second_task, 3) unless Task.find_by(title: "TEST2")
+FactoryBot.create_list(:third_task, 4) unless Task.find_by(title: "TEST3")
