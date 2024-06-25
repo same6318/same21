@@ -39,11 +39,10 @@ RSpec.describe 'タスクモデル機能', type: :model do
         input_data = "桃"
         result = Task.title_like(input_data)
         expect(result.first.title).to eq "桃は美味しい"
-        fill_in "task[search_title]", with: '作成'
-        task_titles = all("tbody tr").map do |task|
-          task.find("作成", match: :first).text
-        end
-        expect(task_titles).to eq ["TESTは作成", "タイトルを作成"]
+        expect(Task.title_like("は").count).to eq 2
+        expect(Task.title_like("作成")).not_to include(second_task)
+        expect(Task.title_like("作成")).to include(task)
+        expect(Task.title_like("作成")).to include(third_task)
         # toとnot_toのマッチャを使って検索されたものとされなかったものの両方を確認する
         # 検索されたテストデータの数を確認する
       end
@@ -51,12 +50,21 @@ RSpec.describe 'タスクモデル機能', type: :model do
 
     context 'scopeメソッドでステータス検索をした場合' do
       it "ステータスに完全一致するタスクが絞り込まれる" do
+        expect(Task.status_is("0")).to include(task)
+        expect(Task.status_is("0")).not_to include(second_task)
+        expect(Task.status_is("1")).to include(second_task)
+        expect(Task.status_is("1")).not_to include(third_task)
+        expect(Task.status_is("2").count).to eq 1
+        #binding.irb
         # toとnot_toのマッチャを使って検索されたものとされなかったものの両方を確認する
         # 検索されたテストデータの数を確認する
       end
     end
     context 'scopeメソッドでタイトルのあいまい検索とステータス検索をした場合' do
       it "検索ワードをタイトルに含み、かつステータスに完全一致するタスクが絞り込まれる" do
+        expect(Task.title_and_status_is("作成","0")).to include(task)
+        expect(Task.title_and_status_is("作成","0").count).to eq 1
+        expect(Task.title_and_status_is("は","2")).to include(third_task)
         # toとnot_toのマッチャを使って検索されたものとされなかったものの両方を確認する
         # 検索されたテストデータの数を確認する
       end

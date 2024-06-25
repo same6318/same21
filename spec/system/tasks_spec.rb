@@ -20,10 +20,11 @@ RSpec.describe "Tasks", type: :system do
   end
 
   describe '一覧表示機能' do
+    let!(:task) { FactoryBot.create(:task, created_at:"2022-02-18") }
+    let!(:second_task) { FactoryBot.create(:second_task, created_at:"2022-02-17") }
+    let!(:third_task) { FactoryBot.create(:third_task, created_at:"2022-02-16") }
+
     context '一覧画面に遷移した場合' do
-      let!(:task) { FactoryBot.create(:task, created_at:"2022-02-18") }
-      let!(:second_task) { FactoryBot.create(:second_task, created_at:"2022-02-17") }
-      let!(:third_task) { FactoryBot.create(:third_task, created_at:"2022-02-16") }
 
       # it '登録済みのタスク一覧が表示される' do
       #   #テストで使用するタスクを登録
@@ -69,7 +70,53 @@ RSpec.describe "Tasks", type: :system do
         expect(task_titles).not_to eq ["TEST","TEST2","TEST3"]
       end
     end
+
+    describe 'ソート機能' do
+      let!(:task) { FactoryBot.create(:task) }
+      let!(:second_task) { FactoryBot.create(:second_task) }
+      let!(:third_task) { FactoryBot.create(:third_task) }
+      before do
+        visit tasks_path
+      end
+      context '「終了期限」というリンクをクリックした場合' do
+        it "終了期限昇順に並び替えられたタスク一覧が表示される" do
+          deadline_dates = all("tbody tr").map do |date|
+            date.text.match(/\d{4}\/\d{2}\/\d{2}/)[0] #[0]を記載しないとMatchDateオブジェクトが返るだけ。
+            #(/\d{4}\/\d{2}\/\d{2}/に一致したものだけをMatchDataオブジェクトとして返す＝要素は1個だけだが、[0]で指定してないと取り出しは不可)
+          end
+          binding.irb
+          expect(deadline_dates).to eq ["2024/06/24", "2024/02/17", "2024/02/16"]  
+
+          # allメソッドを使って複数のテストデータの並び順を確認する
+        end
+      end
+      context '「優先度」というリンクをクリックした場合' do
+        it "優先度の高い順に並び替えられたタスク一覧が表示される" do
+          # allメソッドを使って複数のテストデータの並び順を確認する
+        end
+      end
+    end
+    describe '検索機能' do
+      context 'タイトルであいまい検索をした場合' do
+        it "検索ワードを含むタスクのみ表示される" do
+          # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        end
+      end
+      context 'ステータスで検索した場合' do
+        it "検索したステータスに一致するタスクのみ表示される" do
+          # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        end
+      end
+      context 'タイトルとステータスで検索した場合' do
+        it "検索ワードをタイトルに含み、かつステータスに一致するタスクのみ表示される" do
+          # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        end
+      end
+    end
+
   end
+
+
 
   describe '詳細表示機能' do
      context '任意のタスク詳細画面に遷移した場合' do

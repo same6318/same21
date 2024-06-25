@@ -3,13 +3,16 @@ class TasksController < ApplicationController
 
   def index
     # @tasks = Task.all.created_at_sort.page(params[:page]).per(10) #ページネーションさせるデータに.page(params[:page])を追加
-    if @search_params = task_search_params
-      #binding.irb
+    if @search_params = task_search_params.presence
+      # binding.irb
       @tasks = Task.search(@search_params).created_at_sort.page(params[:page]).per(10)
     elsif params[:deadline_asc_sort]
-      @tasks = Task.deadline_asc_sort
-    else params[:priority_high_sort]
-      @tasks = Task.priority_high_sort
+      # binding.irb
+      @tasks = Task.deadline_asc_sort.created_at_sort.page(params[:page]).per(10)
+    elsif params[:priority_high_sort]
+      @tasks = Task.priority_high_sort.created_at_sort.page(params[:page]).per(10)
+    else
+      @tasks = Task.created_at_sort.page(params[:page]).per(10)
     end
     # binding.irb
     # if params[:deadline_asc_sort]
@@ -17,7 +20,6 @@ class TasksController < ApplicationController
     # elsif params[:priority_high_sort]
     #   @tasks = Task.priority_high_sort
     # else
-      
     # end
   end
 
