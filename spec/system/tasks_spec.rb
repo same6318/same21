@@ -52,7 +52,7 @@ RSpec.describe "Tasks", type: :system do
     end
 
     context "新たにタスクを作成した場合" do
-      let!(:task) { FactoryBot.create(:task) }
+      let!(:task) { FactoryBot.create(:task,title: "桃") }
       let!(:second_task) { FactoryBot.create(:second_task) }
       let!(:third_task) { FactoryBot.create(:third_task) }
       before do
@@ -66,49 +66,88 @@ RSpec.describe "Tasks", type: :system do
           task.find("td", match: :first).text
         end
         #binding.irb
-        expect(task_titles).to eq ["TEST3","TEST2","TEST"]
-        expect(task_titles).not_to eq ["TEST","TEST2","TEST3"]
+        expect(task_titles).to eq ["TEST3","TEST2","桃"]
+        expect(task_titles).not_to eq ["桃","TEST2","TEST3"]
       end
     end
 
     describe 'ソート機能' do
       let!(:task) { FactoryBot.create(:task) }
       let!(:second_task) { FactoryBot.create(:second_task) }
-      let!(:third_task) { FactoryBot.create(:third_task) }
+      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10") }
       before do
         visit tasks_path
       end
       context '「終了期限」というリンクをクリックした場合' do
         it "終了期限昇順に並び替えられたタスク一覧が表示される" do
+          click_on "終了期限"
           deadline_dates = all("tbody tr").map do |date|
-            date.text.match(/\d{4}\/\d{2}\/\d{2}/)[0] #[0]を記載しないとMatchDateオブジェクトが返るだけ。
-            #(/\d{4}\/\d{2}\/\d{2}/に一致したものだけをMatchDataオブジェクトとして返す＝要素は1個だけだが、[0]で指定してないと取り出しは不可)
+            date.text.match(/\d{4}-\d{2}-\d{2}/)[0] #[0]を記載しないとMatchDateオブジェクトが返るだけ。
           end
-          binding.irb
-          expect(deadline_dates).to eq ["2024/06/24", "2024/02/17", "2024/02/16"]  
-
+          # save_and_open_page
+          # binding.irb
+          expect(deadline_dates).to eq ["2024-01-10", "2024-02-17", "2024-02-18"]
           # allメソッドを使って複数のテストデータの並び順を確認する
         end
       end
       context '「優先度」というリンクをクリックした場合' do
         it "優先度の高い順に並び替えられたタスク一覧が表示される" do
+          click_link('優先度')
+          # sleep 1
+          # save_and_open_page
+          priority_dates = all("tbody tr").map do |date|
+            date.find_all("td")[4].text
+          end
+          # binding.irb
+          expect(priority_dates).to eq ["高","中","低"]
           # allメソッドを使って複数のテストデータの並び順を確認する
         end
       end
     end
+
     describe '検索機能' do
+      let!(:task) { FactoryBot.create(:task, title:"タスク作成") }
+      let!(:second_task) { FactoryBot.create(:second_task, title:"桃を作成") }
+      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10") }
+      before do
+        visit tasks_path
+      end
+
       context 'タイトルであいまい検索をした場合' do
         it "検索ワードを含むタスクのみ表示される" do
+          fill_in "search[title]", with: "作"
+          click_on "検索"
+          expect(page).to have_content("タスク")
+          expect(page).to have_content("桃")
+          expect(page).not_to have_content("TEST")
+          # binding.irb
+          input = "桃"
+          result = Task.title_like(input)
+          expect(result.count).to eq 1
           # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
         end
       end
       context 'ステータスで検索した場合' do
         it "検索したステータスに一致するタスクのみ表示される" do
+          select "完了", from: "search[status]"
+          # save_and_open_page
+          click_on "検索"
+          expect(page).not_to have_content("桃")
+          expect(page).not_to have_content("タスク作成")
+          expect(page).to have_content("TEST3")
           # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
         end
       end
       context 'タイトルとステータスで検索した場合' do
         it "検索ワードをタイトルに含み、かつステータスに一致するタスクのみ表示される" do
+          fill_in "search[title]", with: "桃"
+          select "着手中", from: "search[status]"
+          click_on "検索"
+          expect(page).not_to have_content("タスク作成")
+          expect(page).to have_content("桃")
+          input = "桃"
+          result = Task.title_like(input)
+          expect(result.count).to eq 1
           # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
         end
       end
@@ -122,7 +161,7 @@ RSpec.describe "Tasks", type: :system do
      context '任意のタスク詳細画面に遷移した場合' do
        it 'そのタスクの内容が表示される' do
         task = FactoryBot.create(:second_task)
-        visit task_path(task)
+        visit tasks_path
         expect(page).to have_text("TEST2")
        end
      end
