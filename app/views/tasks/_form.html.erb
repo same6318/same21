@@ -9,6 +9,23 @@
     <%= form.text_area :content %>
   </div>
 
+    <div class="field">
+    <%= form.label :deadline_on %>
+    <%= form.date_field :deadline_on %>
+  </div>
+
+  <div class="field">
+    <%= form.label :priority %>
+    <%= form.select :priority, options_for_select(Task.priorities.keys.map{ |k| [I18n.t("activerecord.enums.priority.#{k}"), k] }), {include_blank: true} %>
+    <%# ダブルクォーテーションじゃないと、文字列の展開はできない。注意%>
+  </div>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true } %>
+  </div>
+
+
   <div class="action">
     <% if @task.new_record? %>
       <%= form.submit id: "create-task" %>

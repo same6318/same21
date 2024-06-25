@@ -8,11 +8,23 @@ ja:
         title: タイトル
         content: 内容
         created_at: 作成日時
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
       user:
         name: 名前
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+    enums:
+      priority:
+        low: 低
+        middle: 中
+        high: 高
+      status:
+        started_yet: 未着手
+        get_started: 着手中
+        complete: 完了
   errors:
     format: "%{attribute}%{message}"
     messages:
@@ -21,6 +33,7 @@ ja:
     submit:
       create: 登録する
       update: 更新する
+      search: 検索する
   common:
     new: 新規作成
     show: 詳細
