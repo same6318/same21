@@ -11,10 +11,19 @@
 
   <body>
     <p id="notice"><%= notice %></p> <%# このpでフラッシュメッセージ%>
+    <% if logged_in? %>
     <ul>
-      <li><%= link_to t("tasks.index.task"), tasks_path, id: "tasks-index" %></li>
-      <li><%= link_to t("tasks.index.new"), new_task_path, id: "new-task" %></li>
+      <li><%= link_to "タスク一覧", tasks_path %></li>
+      <li><%= link_to "タスクを登録する", new_task_path %></li>
+      <li><%= link_to "アカウント設定", user_path(current_user.id), id: "account-setting" %></li>
+      <li><%= link_to "ログアウト", session_path(current_user.id), method: :delete, id:"sign-out" %></li>
     </ul>
+    <% else %>
+    <ul>
+      <li><%= link_to "アカウント登録", new_user_path, id: "sign-up" %></li>
+      <li><%= link_to "ログイン", new_session_path, id: "sign-in" %></li>
+    </ul>
+    <% end %>
     <%= yield %>
   </body>
 </html>

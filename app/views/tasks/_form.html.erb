@@ -38,11 +38,13 @@
 <%= form_with(model: task, local: true) do |form| %>
   <% if task.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <h2><%#= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
 
       <ul>
         <% task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <% unless message.include?("Userを入力してください") %> <%#user_id：のnotnull制約を追加があるので、反応してしまう%>
+            <li><%= message %></li>
+          <% end %>
         <% end %>
       </ul>
     </div>

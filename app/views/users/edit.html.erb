@@ -1,0 +1,6 @@
+<h1><%= t('.title') %></h1> <%#このt('.title')のtはメソッドであり、翻訳のymlファイルに繋ぐ%>
+
+<%= render 'form', user: @user %>
+<%# render 'テンプレートのファイル名を指定。ディレクトリの下にあれば、その内容で書く'%>
+
+<%= link_to t('common.back'), user_path(@current_user.id), id: "back" %>
