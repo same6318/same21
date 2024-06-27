@@ -23,16 +23,18 @@ RSpec.describe 'タスクモデル機能', type: :model do
 
     context 'タスクのタイトルと説明に値が入っている場合' do
       it 'タスクを登録できる' do
-        task = FactoryBot.create(:task)
+        user = FactoryBot.create(:user)
+        task = FactoryBot.create(:task, user_id:user.id)
         expect(task).to be_valid
       end
     end
   end
 
   describe '検索機能' do
-    let!(:task) { FactoryBot.create(:task, title:"タイトルを作成") }
-    let!(:second_task) { FactoryBot.create(:second_task, title:"桃は美味しい") }
-    let!(:third_task) { FactoryBot.create(:third_task, title:"TESTは作成") }
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:task) { FactoryBot.create(:task, title:"タイトルを作成", user_id: user.id) }
+    let!(:second_task) { FactoryBot.create(:second_task, title:"桃は美味しい", user_id: user.id) }
+    let!(:third_task) { FactoryBot.create(:third_task, title:"TESTは作成", user_id: user.id) }
 
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do
       it "検索ワードを含むタスクが絞り込まれる" do

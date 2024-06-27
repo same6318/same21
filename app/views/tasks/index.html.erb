@@ -6,7 +6,9 @@
   <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true } %>
   <%= form.label :title, I18n.t("activerecord.attributes.task.title") %>
   <%= form.text_field :title, value: (@search_params.present? ? @search_params[:title] : "") %>
-  <%= form.submit "検索", id: "search_task" %>
+  <%# (@search_params.present? ? @search_params[:title] : "") タイトル検索をしていれば、それがsearch_paramsに入る。なければ、テキストボックスには""が表示される%>
+  <%= form.submit t('common.search'), id: "search_task" %>
+  <%# form.submit＝data-disable-with属性。一度クリックされるとボタンが無効となる。二重サブミット対策%>
 <% end %>
 
 

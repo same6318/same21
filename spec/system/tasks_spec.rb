@@ -4,11 +4,18 @@ RSpec.describe "Tasks", type: :system do
   # before do
   #   driven_by(:selenium_chrome_headless)
   # end
+  let!(:user) { FactoryBot.create(:user) }
+  before do
+    visit new_session_path
+    fill_in "session[email]", with: "User@test.com"
+    fill_in "session[password]", with: "123456"
+    click_button "ログイン"
+  end
 
   describe '登録機能' do
     context 'タスクを登録した場合' do
       it '登録したタスクが表示される' do
-        task = FactoryBot.create(:task, title: "会議資料作成") #factoryボットの情報を上書きして作成
+        task = FactoryBot.create(:task, title: "会議資料作成", user_id:user.id) #factoryボットの情報を上書きして作成
         if task.save
           visit task_path(task)
           expect(page).to have_text("会議")
@@ -20,9 +27,9 @@ RSpec.describe "Tasks", type: :system do
   end
 
   describe '一覧表示機能' do
-    let!(:task) { FactoryBot.create(:task, created_at:"2022-02-18") }
-    let!(:second_task) { FactoryBot.create(:second_task, created_at:"2022-02-17") }
-    let!(:third_task) { FactoryBot.create(:third_task, created_at:"2022-02-16") }
+    let!(:task) { FactoryBot.create(:task, created_at:"2022-02-18", user_id:user.id) }
+    let!(:second_task) { FactoryBot.create(:second_task, created_at:"2022-02-17", user_id:user.id) }
+    let!(:third_task) { FactoryBot.create(:third_task, created_at:"2022-02-16", user_id:user.id) }
 
     context '一覧画面に遷移した場合' do
 
@@ -52,9 +59,9 @@ RSpec.describe "Tasks", type: :system do
     end
 
     context "新たにタスクを作成した場合" do
-      let!(:task) { FactoryBot.create(:task,title: "桃") }
-      let!(:second_task) { FactoryBot.create(:second_task) }
-      let!(:third_task) { FactoryBot.create(:third_task) }
+      let!(:task) { FactoryBot.create(:task,title: "桃", user_id:user.id) }
+      let!(:second_task) { FactoryBot.create(:second_task, user_id:user.id) }
+      let!(:third_task) { FactoryBot.create(:third_task, user_id:user.id) }
       before do
         visit tasks_path
         # save_and_open_page
@@ -72,9 +79,9 @@ RSpec.describe "Tasks", type: :system do
     end
 
     describe 'ソート機能' do
-      let!(:task) { FactoryBot.create(:task) }
-      let!(:second_task) { FactoryBot.create(:second_task) }
-      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10") }
+      let!(:task) { FactoryBot.create(:task, user_id:user.id) }
+      let!(:second_task) { FactoryBot.create(:second_task, user_id:user.id) }
+      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10", user_id:user.id) }
       before do
         visit tasks_path
       end
@@ -106,9 +113,9 @@ RSpec.describe "Tasks", type: :system do
     end
 
     describe '検索機能' do
-      let!(:task) { FactoryBot.create(:task, title:"タスク作成") }
-      let!(:second_task) { FactoryBot.create(:second_task, title:"桃を作成") }
-      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10") }
+      let!(:task) { FactoryBot.create(:task, title:"タスク作成", user_id:user.id) }
+      let!(:second_task) { FactoryBot.create(:second_task, title:"桃を作成", user_id:user.id) }
+      let!(:third_task) { FactoryBot.create(:third_task, deadline_on:"2024-01-10", user_id:user.id) }
       before do
         visit tasks_path
       end
@@ -116,6 +123,7 @@ RSpec.describe "Tasks", type: :system do
       context 'タイトルであいまい検索をした場合' do
         it "検索ワードを含むタスクのみ表示される" do
           fill_in "search[title]", with: "作"
+          # binding.irb
           click_on "検索"
           expect(page).to have_content("タスク")
           expect(page).to have_content("桃")
@@ -160,7 +168,7 @@ RSpec.describe "Tasks", type: :system do
   describe '詳細表示機能' do
      context '任意のタスク詳細画面に遷移した場合' do
        it 'そのタスクの内容が表示される' do
-        task = FactoryBot.create(:second_task)
+        task = FactoryBot.create(:second_task, user_id:user.id)
         visit task_path(task)
         expect(page).to have_text("TEST2")
        end

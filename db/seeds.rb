@@ -6,37 +6,31 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+user = User.create!(name:"seedUser",email:"seed1@sample.com",admin: false, password:"123456",password_confirmation:"123456")
+admin = User.create!(name:"seedUser",email:"seed2@sample.com",admin: true, password:"123456",password_confirmation:"123456")
 
-3.times do |i|
-  unless Task.find_by(title: "First_task#{i+1}")
-  Task.create!(
-  title:"First_task#{i+1}",
+
+50.times do |i|
+  unless user.tasks.find_by(title: "user_task#{i+1}")
+  user.tasks.create!(
+  title:"user_task#{i+1}",
   content:"SEEDで作成#{i+1}",
-  deadline_on: "2024-02-18",
+  deadline_on: "2024-06-27",
   priority: 1,
-  status: 0 )
+  status: 0,
+  user_id: user.id )
   end
 end
 
-3.times do |i|
-  unless Task.find_by(title: "Second_task#{i+1}")
-  Task.create!(
-  title:"Second_task#{i+1}",
+50.times do |i|
+  unless admin.tasks.find_by(title: "admin_task#{i+1}")
+  admin.tasks.create!(
+  title:"admin_task#{i+1}",
   content:"SEEDで作成#{i+1}",
-  deadline_on: "2024-02-17",
+  deadline_on: "2024-06-28",
   priority: 2,
-  status: 1 )
-  end
-end
-
-4.times do |i|
-  unless Task.find_by(title: "Third_task#{i+1}")
-  Task.create!(
-  title:"Third_task#{i+1}",
-  content:"SEEDで作成#{i+1}",
-  deadline_on: "2024-02-16",
-  priority: 0,
-  status: 2 )
+  status: 1,
+  user_id: admin.id )
   end
 end
 
