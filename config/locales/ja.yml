@@ -16,6 +16,8 @@ ja:
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+        admin: 管理者権限
+        task_count: タスク数
     enums:
       priority:
         low: 低
@@ -78,6 +80,22 @@ ja:
       created: ログインしました
     destroy:
       destroyed: ログアウトしました
+  admin:
+    users:
+      index:
+        title: ユーザ一覧ページ
+      new:
+        title: ユーザ登録ページ
+      show:
+        title: ユーザ詳細ページ
+      edit:
+        title: ユーザ編集ページ
+      create:
+        created: ユーザを登録しました
+      update:
+        updated: ユーザを更新しました
+      destroy:
+        destroyed: ユーザを削除しました
   time:
     formats:
       defauls: "%Y/%m/%d %H:%M:%S"

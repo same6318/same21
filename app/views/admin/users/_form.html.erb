@@ -1,0 +1,49 @@
+<%= form_with(model: [:admin, @user], local: true) do |form| %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_area :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :admin %>
+    <%= form.check_box :admin %>
+  </div>
+
+
+  <div class="actions">
+    <% if @user.new_record? %>
+      <%= form.submit id: "create-user" %>
+    <% else %>
+      <%= form.submit id: "update-user" %>
+    <% end %>
+  </div>
+
+  <% if @user.errors.any? %>
+  <div id="error_explanation"> <%# railsのデフォルトのエラー用スタイルが適用できる。%>
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this from being saved:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |attr, message| %>
+        <li><%= "#{attr} #{message}" %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+<% end %>
+

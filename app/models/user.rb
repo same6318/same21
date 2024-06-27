@@ -11,4 +11,19 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6, message: 'は6文字以上で入力してください'}
   #日本語化の部分でblankのところが定義されている場合、オプションで追加でメッセージを付与する必要はない。
 
+  before_destroy :ensure_admin_presence, prepend: true
+  #削除する前に確認する
+
+  private
+
+    def ensure_admin_presence
+      #binding.irb
+      if self.admin? && User.where(admin: true).count == 1
+        throw :abort
+        # return false
+      end
+      # before_destroy自体がfalseを返すので、コールバック自体を止めないと、dependの方が働くのかな？
+      # server errorにする＝raiseは使えない。
+      # self.admin?のselfは削除該当のユーザー。
+    end
 end

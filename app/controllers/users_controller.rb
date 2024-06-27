@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in(@user)
       flash[:notice] = t('.created')
-      redirect_to user_path(@user.id)
+      redirect_to tasks_path
     else
       render :new
     end
