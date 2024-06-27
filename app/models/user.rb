@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   before_destroy :ensure_admin_presence, prepend: true
   #削除する前に確認する
-  before_update :admin_count,
+  # before_update :admin_count,
 
   private
 
