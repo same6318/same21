@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   before_destroy :ensure_admin_presence, prepend: true
   #削除する前に確認する
-  # before_update :admin_count,
+  before_update :admin_count
 
   private
 
@@ -27,4 +27,13 @@ class User < ApplicationRecord
       # server errorにする＝raiseは使えない。
       # self.admin?のselfは削除該当のユーザー。
     end
+
+    def admin_count
+      # binding.irb
+      if self.will_save_change_to_admin? && User.where(admin: true).count == 1
+        throw :abort
+        # return false
+      end
+    end
+
 end

@@ -36,6 +36,8 @@ class Admin::UsersController < ApplicationController
       flash[:notice] = "ユーザを更新しました"
       redirect_to admin_users_path
     else
+      # binding.irb
+      flash.now[:notice] = "管理者が0人になるため権限を変更できません"
       render :edit
     end
   end
