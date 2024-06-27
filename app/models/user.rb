@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
     def admin_count
       # binding.irb
-      if self.will_save_change_to_admin? && User.where(admin: true).count == 1
+      if self.will_save_change_to_admin?(from:true, to:false) && User.where(admin: true).count == 1
         throw :abort
         # return false
       end
