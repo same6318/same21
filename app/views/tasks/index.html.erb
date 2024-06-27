@@ -7,7 +7,7 @@
   <%= form.label :title, I18n.t("activerecord.attributes.task.title") %>
   <%= form.text_field :title, value: (@search_params.present? ? @search_params[:title] : "") %>
   <%# (@search_params.present? ? @search_params[:title] : "") タイトル検索をしていれば、それがsearch_paramsに入る。なければ、テキストボックスには""が表示される%>
-  <%= form.submit id: "search_task" %>
+  <%= form.submit t('common.search'), id: "search_task" %>
   <%# form.submit＝data-disable-with属性。一度クリックされるとボタンが無効となる。二重サブミット対策%>
 <% end %>
 

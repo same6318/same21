@@ -51,7 +51,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     unless current_user?(@user)
       flash[:notice] = "ログインしてください"
-      redirect_to current_user
+      redirect_to tasks_path
     end
   end
 
