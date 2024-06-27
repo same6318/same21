@@ -101,6 +101,7 @@ require 'rails_helper'
         visit admin_users_path
         # binding.irb
         delete_linkposition = 1 #削除する行を変更可能にする。
+        #all("tbody tr").sizeで何行目かということと、index番号確認
         all("tbody tr")[delete_linkposition].click_link "削除"
         expect(page).not_to have_text("スペック")
        end
