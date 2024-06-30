@@ -3,6 +3,7 @@ ja:
     models:
       task: タスク
       user: ユーザー
+      label: ラベル
     attributes:
       task:
         title: タイトル
@@ -18,6 +19,9 @@ ja:
         password_confirmation: パスワード（確認）
         admin: 管理者権限
         task_count: タスク数
+      label:
+        name: 名前
+        label: ラベル
     enums:
       priority:
         low: 低
@@ -42,6 +46,7 @@ ja:
     destroy: 削除
     back: 戻る
     search: 検索
+    login: ログイン
     confirm_destroy: 本当に削除してもよろしいですか？
   tasks:
     index:
@@ -96,6 +101,19 @@ ja:
         updated: ユーザを更新しました
       destroy:
         destroyed: ユーザを削除しました
+  labels:
+    index:
+      title: ラベル一覧ページ
+    new:
+      title: ラベル登録ページ
+    create:
+      created: ラベルを登録しました
+    edit:
+      title: ラベル編集ページ
+    update:
+      updated: ラベルを更新しました
+    destroy:
+      destroyed: ラベルを削除しました
   time:
     formats:
       defauls: "%Y/%m/%d %H:%M:%S"

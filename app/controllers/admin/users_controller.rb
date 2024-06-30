@@ -2,7 +2,8 @@ class Admin::UsersController < ApplicationController
   before_action :require_admin
 
   def index
-    @users = User.eager_load(:tasks)
+    # @users = User.eager_load(:tasks)
+    @users = User.includes(:tasks)
   end
     #eager_loadでタスクテーブルを結合した状態でローディング
 

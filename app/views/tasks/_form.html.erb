@@ -1,36 +1,46 @@
-<%= form_with(model: @task, local: true) do |form| %>
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+<%= form_with(model: @task, local: true, class:"px-4 py-3") do |form| %>
+
+  <div class="mb-3 field">
+    <%= form.label :title, class:"form-label" %>
+    <%= form.text_field :title, class:"form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.text_area :content %>
+  <div class="mb-3 field">
+    <%= form.label :content, class:"form-label" %>
+    <%= form.text_area :content, class:"form-control" %>
   </div>
 
-    <div class="field">
-    <%= form.label :deadline_on %>
-    <%= form.date_field :deadline_on %>
+    <div class="mb-3 field">
+    <%= form.label :deadline_on, class:"form-label" %>
+    <%= form.date_field :deadline_on, class:"form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :priority %>
-    <%= form.select :priority, options_for_select(Task.priorities.keys.map{ |k| [I18n.t("activerecord.enums.priority.#{k}"), k] }), {include_blank: true} %>
+  <div class="mb-3 field">
+    <%= form.label :priority, class:"form-label" %>
+    <%= form.select :priority, options_for_select(Task.priorities.keys.map{ |k| [I18n.t("activerecord.enums.priority.#{k}"), k] }), {include_blank: true}, class:"form-control" %>
     <%# ダブルクォーテーションじゃないと、文字列の展開はできない。注意%>
   </div>
 
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true } %>
+  <div class="mb-3 field">
+    <%= form.label :status, class:"form-label" %>
+    <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true }, class:"form-control" %>
   </div>
 
+  <div class="mb-3 field">
+    <% Label.all.where(user_id:current_user.id).each do |label|%>
+    <%= form.check_box :label_ids, { multiple: true, include_hidden: false}, label[:id], class:"form-check-input" %>
+    <span class="form-check-label"><%= label.name %></span>
+    <% end %>
+    <%# label_idsを取り出して、表示する。
+        multipleは複数の値を配列形式のパラメータで送ることができる
+        include_hidden:falseはチェックが無かったラベルの値を送信しない。check_boxの値はfalseだと0で送信されるから%>
+  </div>
 
   <div class="action">
     <% if @task.new_record? %>
-      <%= form.submit id: "create-task" %>
+      <%= form.submit id: "create-task", class:"btn btn-primary" %>
     <% else %>
-      <%= form.submit id: "update-task" %>
+      <%= form.submit id: "update-task", class:"btn btn-primary" %>
     <% end %>
   </div>
 <% end %>

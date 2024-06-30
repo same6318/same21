@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :tasks
   root to: "tasks#index"
+  resources :labels, only: [:index, :new, :create, :edit, :update, :destroy]
 
   resources :users, only: [:new, :create, :show, :edit, :update, :destroy]
   namespace :admin do
