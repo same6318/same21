@@ -11,12 +11,12 @@
   <%= form.text_field :title, value: (@search_params.present? ? @search_params[:title] : ""), class:"form-control" %>
   <%# (@search_params.present? ? @search_params[:title] : "") タイトル検索をしていれば、それがsearch_paramsに入る。なければ、テキストボックスには""が表示される%>
 </div>
-<div class="col-md-5 mt-3">
+<div class="col-md-4 mt-3">
   <%= form.label :label, Label.human_attribute_name(:label), class:"form-label" %>
   <%= form.select :label, current_user.labels.map { |label| [label.name,label.id] } , { include_blank: true }, class:"form-select form-control" %>
 </div>
 <div class="col-md-2 mt-3 float-right">
-  <%= form.submit t('common.search'), id: "search_task", class:"btn btn-primary b-block w-100" %>
+  <%= form.submit t('common.search'), id: "search_task", class:"btn btn-primary" %>
   <%# form.submit＝data-disable-with属性。一度クリックされるとボタンが無効となる。二重サブミット対策%>
 </div>
 <% end %>

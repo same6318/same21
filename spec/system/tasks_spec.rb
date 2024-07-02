@@ -140,6 +140,7 @@ RSpec.describe "Tasks", type: :system do
           select "完了", from: "search[status]"
           # save_and_open_page
           click_on "検索"
+          # binding.irb
           expect(page).not_to have_content("桃")
           expect(page).not_to have_content("タスク作成")
           expect(page).to have_content("TEST3")
@@ -175,6 +176,31 @@ RSpec.describe "Tasks", type: :system do
      end
   end
 
+  describe '検索機能' do
+    let!(:user) { FactoryBot.create(:user, email:"aaa@sample.com") }
+    let!(:label) { FactoryBot.create(:label, name: "食べ物", user_id:user.id) }
+    let!(:second_label) { FactoryBot.create(:second_label, user_id:user.id) }
+    let!(:third_label) { FactoryBot.create(:third_label, name: "旅行先", user_id:user.id) }
+    before do
+      visit new_session_path
+      fill_in "session[email]", with: "aaa@sample.com"
+      fill_in "session[password]", with: "123456"
+      click_button "ログイン"
+    end
+
+    context 'ラベルで検索をした場合' do
+      it "そのラベルの付いたタスクがすべて表示される" do
+        task = FactoryBot.create(:task)
+        binding.irb
+        select "食べ物", from: "search[label]"
+        click_on "検索"
+        # save_and_open_page
+        expect(page).to have_text("食べ物")
+        expect(page).not_to have_text("旅行先")
+        # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+      end
+    end
+  end
 
 
 end
