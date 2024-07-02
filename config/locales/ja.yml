@@ -22,6 +22,7 @@ ja:
         task_count: タスク数
       label:
         name: 名前
+        label: ラベル
     enums:
       priority:
         low: 低
