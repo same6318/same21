@@ -12,6 +12,7 @@ ja:
         deadline_on: 終了期限
         priority: 優先度
         status: ステータス
+        label: ラベル
       user:
         name: 名前
         email: メールアドレス
@@ -21,7 +22,6 @@ ja:
         task_count: タスク数
       label:
         name: 名前
-        label: ラベル
     enums:
       priority:
         low: 低
