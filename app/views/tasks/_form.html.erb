@@ -36,7 +36,7 @@
         <div class="px-2">
           <span class="form-check-label"><%= form.label :label_ids, label.name, value: label.id %></span>
           <%# <%= form.label :label_ids, label.name, value: label.id
-          ここでチェックボックスに対して、label要素の「for」属性で紐づけしておかないとチェックボックスを押すというテストは実行できない。%>
+          ここでチェックボックスに対して、label要素の「for」属性と紐づけしておかないとチェックボックスを押すというテストは実行できない。%>
         </div>
       <% end %>
     </div>

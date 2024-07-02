@@ -9,12 +9,16 @@ FactoryBot.define do
 
     trait :with_label do
       after(:create) do |task|
-        label = FactoryBot.create(:label, user: task.user)
+        label = FactoryBot.create(:label, user: task.user) #ここでラベル作成しておく。
         # task.task_label_relations.create!(label: label)
-        task = FactoryBot.create(:task_label_relation,task:task,label:label)
+        relation = FactoryBot.create(:task_label_relation,task:task,label:label)
+        #task: taskはタスクデータをそのまま渡している。label: labelも同じ。
+        #先にコンソール上でデータが作成できることを確認しておく。ただ、アソシエーションしていると色んな制限があるから。
+        #上書きして作成する方が楽だったりする。
       end
     end
   end
+  #
 
   #存在しないクラス名をテストデータに作る場合は、class: Taskとクラスの定義が必要。
   factory :second_task, class: Task do

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :label do
     name { "TEST" }
-    user { nil }
+    user { nil } #labelのユーザーは無しにしないと、withで作る時に弾かれる。
   end
 
   factory :second_label, class: Label do
