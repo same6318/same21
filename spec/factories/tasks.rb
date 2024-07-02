@@ -5,17 +5,12 @@ FactoryBot.define do
     deadline_on { "2024-02-18" }
     priority { 1 }
     status { 0 }
-    association :user
-
-    transient do
-      labels_count { 1 }
-    end
+    association :user #ここでユーザーを作成
 
     trait :with_label do
       after(:create) do |task|
-        user = task.user
-        label = FactoryBot.create(:label, user:task.user)
-        task_label = task.task_label_relations.create(:task_label_relation, task: task, label: label)
+        label = create(:label)
+        task.task_label_relations.create!(label: label)
       end
     end
   end

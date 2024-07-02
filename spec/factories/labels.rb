@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :label do
     name { "TEST" }
-    # user { association :user }
+    user { task.user }
   end
 
   factory :second_label, class: Label do

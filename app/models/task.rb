@@ -27,15 +27,9 @@ class Task < ApplicationRecord
     return if search_params.blank?
     # title_like(search_params[:title])
     #   .status_is(search_params[:status])
-    # title_and_status_is(search_params[:title], search_params[:status])
-    # label_is(search_params[:label])
-
-    tasks = self
-    tasks = tasks.title_like(search_params[:title]) if search_params[:title].present?
-    tasks = tasks.status_is(search_params[:status]) if search_params[:status].present?
-    tasks = tasks.label_is(search_params[:label]) if search_params[:label].present?
-
-    tasks
+    title_and_status_is(search_params[:title], search_params[:status])
+        .label_is(search_params[:label])
+    #メソッドチェーンで繋げている。
   end
   
   #タイトルが存在する場合、タイトルをlike検索する
