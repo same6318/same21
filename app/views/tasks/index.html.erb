@@ -1,23 +1,27 @@
 <h1 class="p-2"><%= t('.title') %></h1>
 
 <%# 検索実行時に非同期通信しないので、locl: trueにしている%>
-<%= form_with(scope: :search, url: tasks_path, method: :get, local: true, class:"row gy-2 gx-3 mb-3") do |form| %>
-<div class="col-md-2 mt-3">
-  <%= form.label :status, I18n.t("activerecord.attributes.task.status"), class:"form-label" %>
-  <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true }, class:"form-select form-control" %>
+<%= form_with(scope: :search, url: tasks_path, method: :get, local: true, class:"gy-2 gx-3 mb-3") do |form| %>
+<div class="row">
+  <div class="col-md-2 mt-3">
+    <%= form.label :status, I18n.t("activerecord.attributes.task.status"), class:"form-label" %>
+    <%= form.select :status, options_for_select(Task.statuses.keys.map{ |k| [I18n.t("activerecord.enums.status.#{k}"), k] }), { include_blank: true }, class:"form-select form-control" %>
+  </div>
+  <div class="col-md-5 mt-3">
+    <%= form.label :title, I18n.t("activerecord.attributes.task.title"), class:"form-label" %>
+    <%= form.text_field :title, value: (@search_params.present? ? @search_params[:title] : ""), class:"form-control" %>
+    <%# (@search_params.present? ? @search_params[:title] : "") タイトル検索をしていれば、それがsearch_paramsに入る。なければ、テキストボックスには""が表示される%>
+  </div>
+  <div class="col-md-5 mt-3">
+    <%= form.label :label, Label.human_attribute_name(:label), class:"form-label" %>
+    <%= form.select :label, current_user.labels.map { |label| [label.name,label.id] } , { include_blank: true }, class:"form-select form-control" %>
+  </div>
 </div>
-<div class="col-md-5 mt-3">
-  <%= form.label :title, I18n.t("activerecord.attributes.task.title"), class:"form-label" %>
-  <%= form.text_field :title, value: (@search_params.present? ? @search_params[:title] : ""), class:"form-control" %>
-  <%# (@search_params.present? ? @search_params[:title] : "") タイトル検索をしていれば、それがsearch_paramsに入る。なければ、テキストボックスには""が表示される%>
-</div>
-<div class="col-md-4 mt-3">
-  <%= form.label :label, Label.human_attribute_name(:label), class:"form-label" %>
-  <%= form.select :label, current_user.labels.map { |label| [label.name,label.id] } , { include_blank: true }, class:"form-select form-control" %>
-</div>
-<div class="col-md-2 mt-3 float-right">
-  <%= form.submit t('common.search'), id: "search_task", class:"btn btn-primary" %>
-  <%# form.submit＝data-disable-with属性。一度クリックされるとボタンが無効となる。二重サブミット対策%>
+<div class="row justify-content-end">
+  <div class="col-md-2 mt-3">
+    <%= form.submit t('common.search'), id: "search_task", class:"btn btn-primary" %>
+    <%# form.submit＝data-disable-with属性。一度クリックされるとボタンが無効となる。二重サブミット対策%>
+  </div>
 </div>
 <% end %>
 

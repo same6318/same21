@@ -9,8 +9,9 @@ FactoryBot.define do
 
     trait :with_label do
       after(:create) do |task|
-        label = create(:label)
-        task.task_label_relations.create!(label: label)
+        label = FactoryBot.create(:label, user: task.user)
+        # task.task_label_relations.create!(label: label)
+        task = FactoryBot.create(:task_label_relation,task:task,label:label)
       end
     end
   end
