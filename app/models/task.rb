@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
   belongs_to :user
+  has_many :task_label_relations, dependent: :destroy
+  has_many :labels, through: :task_label_relations
 
   validates :title, presence: true
   validates :content, presence: true
@@ -26,6 +28,8 @@ class Task < ApplicationRecord
     # title_like(search_params[:title])
     #   .status_is(search_params[:status])
     title_and_status_is(search_params[:title], search_params[:status])
+        .label_is(search_params[:label])
+    #メソッドチェーンで繋げている。
   end
   
   #タイトルが存在する場合、タイトルをlike検索する
@@ -34,4 +38,8 @@ class Task < ApplicationRecord
   scope :status_is, -> (status) { where(status: status) if status.present? }
   #タイトルもステータスも存在する場合、title_and_statusで検索する
   scope :title_and_status_is, -> (title, status) { title_like(title).status_is(status) }
+  #ラベルが存在する場合、label_isで検索する
+  scope :label_is, -> (label) { joins(:task_label_relations).where(task_label_relations: { label_id: label }) if label.present? }
+  #joinsでテーブルを追加して、where(:探し先のテーブル {探すカラム:渡す引数})
+  #whereの書き方注意。
 end

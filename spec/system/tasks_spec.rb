@@ -140,6 +140,7 @@ RSpec.describe "Tasks", type: :system do
           select "完了", from: "search[status]"
           # save_and_open_page
           click_on "検索"
+          # binding.irb
           expect(page).not_to have_content("桃")
           expect(page).not_to have_content("タスク作成")
           expect(page).to have_content("TEST3")
@@ -175,6 +176,40 @@ RSpec.describe "Tasks", type: :system do
      end
   end
 
+  describe '検索機能' do
+    let!(:user) { FactoryBot.create(:user, email:"aaa@sample.com") }
+    let!(:label) { FactoryBot.create(:label, name: "食べ物", user_id:user.id) }
+    let!(:second_label) { FactoryBot.create(:second_label, user_id:user.id) }
+    let!(:third_label) { FactoryBot.create(:third_label, name: "旅行先", user_id:user.id) }
+    before do
+      visit new_session_path
+      fill_in "session[email]", with: "aaa@sample.com"
+      fill_in "session[password]", with: "123456"
+      click_button "ログイン"
+    end
+
+    context 'ラベルで検索をした場合' do
+      it "そのラベルの付いたタスクがすべて表示される" do
+        task = FactoryBot.create(:second_task ,title: "出現するタイトル", user_id: user.id)
+        task2 = FactoryBot.create(:third_task, title: "コンテスト", user_id: user.id)
+        visit edit_task_path(task)
+        select "高", from: "task[priority]"
+        select "着手中", from: "task[status]"
+        check "食べ物"
+        #<label for="task_label_ids_7">123.com</label>タスクのid属性と紐づいてないとcheckできない。
+        #<input type="checkbox" value="7" name="task[label_ids][]" id="task_label_ids_7">
+        click_on "更新する"
+        visit tasks_path
+        select "食べ物", from: "search[label]"
+        click_on "検索"
+        # binding.irb
+        # save_and_open_page
+        expect(page).to have_text("出現するタイトル")
+        expect(page).not_to have_text("コンテスト")
+        # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+      end
+    end
+  end
 
 
 end
