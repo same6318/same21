@@ -193,18 +193,16 @@ RSpec.describe "Tasks", type: :system do
         task = FactoryBot.create(:second_task ,title: "出現するタイトル", user_id: user.id)
         task2 = FactoryBot.create(:third_task, title: "コンテスト", user_id: user.id)
         visit edit_task_path(task)
-        binding.irb
         select "高", from: "task[priority]"
         select "着手中", from: "task[status]"
-        # label_id = user.labels.first.id
-        # checkbox = find("input[type='checkbox'][value='#{label_id}']", visible: false)
-        # checkbox.check
         check "食べ物"
+        #<label for="task_label_ids_7">123.com</label>タスクのid属性と紐づいてないとcheckできない。
+        #<input type="checkbox" value="7" name="task[label_ids][]" id="task_label_ids_7">
         click_on "更新する"
         visit tasks_path
         select "食べ物", from: "search[label]"
         click_on "検索"
-        binding.irb
+        # binding.irb
         # save_and_open_page
         expect(page).to have_text("出現するタイトル")
         expect(page).not_to have_text("コンテスト")

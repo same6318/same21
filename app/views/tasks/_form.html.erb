@@ -28,12 +28,18 @@
 
   <div class="mb-3 field">
     <%= form.label :label, class:"form-label" %>
-    <% Label.all.where(user_id:current_user.id).each do |label|%>
-    <%= form.check_box :label_ids, { multiple: true, include_hidden: false}, label[:id], class:"form-check-input" %>
-    <span class="form-check-label"><%= form.label :label_ids, label.name, value: label.id %></span>
-    <%# <%= form.label :label_ids, label.name, value: label.id
-        ここでチェックボックスに対して、label要素の「for」属性で紐づけしておかないとチェックボックスを押すというテストは実行できない。%>
-    <% end %>
+    <div class="form-check form-check-inline">
+      <% Label.all.where(user_id:current_user.id).each do |label|%>
+        <div>
+          <%= form.check_box :label_ids, { multiple: true, include_hidden: false}, label[:id], class:"form-check-input" %>
+        </div>
+        <div class="px-2">
+          <span class="form-check-label"><%= form.label :label_ids, label.name, value: label.id %></span>
+          <%# <%= form.label :label_ids, label.name, value: label.id
+          ここでチェックボックスに対して、label要素の「for」属性で紐づけしておかないとチェックボックスを押すというテストは実行できない。%>
+        </div>
+      <% end %>
+    </div>
     <%# label_idsを取り出して、表示する。
         multipleは複数の値を配列形式のパラメータで送ることができるparams[:task][:label_ids]
         実際に送られるパラメータ→"task"=>{"title"=>"testupdate"色んなパラメータ, "label_ids"=>["9", "10", "7", "16"]}
