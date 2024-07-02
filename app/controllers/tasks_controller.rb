@@ -6,7 +6,7 @@ class TasksController < ApplicationController
     # @tasks = Task.all.created_at_sort.page(params[:page]).per(10) #ページネーションさせるデータに.page(params[:page])を追加
     if @search_params = task_search_params.presence
       # binding.irb
-      @tasks = current_user.tasks.search(@search_params).created_at_sort.page(params[:page]).per(10)
+        @tasks = current_user.tasks.search(@search_params).created_at_sort.page(params[:page]).per(10)
     elsif params[:deadline_asc_sort]
       # binding.irb
       @tasks = current_user.tasks.deadline_asc_sort.created_at_sort.page(params[:page]).per(10)
@@ -68,7 +68,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status, { label_ids: [] })
   end
 
   def set_task
@@ -81,7 +81,7 @@ class TasksController < ApplicationController
   end
 
   def task_search_params
-    params.fetch(:search, {}).permit(:title, :status)
+    params.fetch(:search, {}).permit(:title, :status, :label)
   end
 
 end

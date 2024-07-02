@@ -1,29 +1,29 @@
-<h1><%= t('.title') %></h1>
+<h1 class="p-2"><%= t('.title') %></h1>
 
-<p>
+<p class="h5 p-2">
   <strong><%= User.human_attribute_name(:name) %>:</strong>
   <%= @user.name %>
 </p>
 
-<p>
+<p class="h5 p-2">
   <strong><%= User.human_attribute_name(:email) %>:</strong>
   <%= @user.email %>
 </p>
 
-<p>
+<p class="h5 p-2">
   <strong><%= User.human_attribute_name(:admin) %>:</strong>
   <%= @user.admin? ? "あり" : "なし" %>
 </p>
 
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th><%= Task.human_attribute_name(:title) %></th>
-      <th><%= Task.human_attribute_name(:content) %></th>
-      <th><%= Task.human_attribute_name(:created_at) %></th>
-      <th><%= link_to Task.human_attribute_name(:deadline_on), tasks_path(deadline_asc_sort: "true") %></th>
-      <th><%= link_to Task.human_attribute_name(:priority), tasks_path(priority_high_sort: "true") %></th>
-      <th><%= Task.human_attribute_name(:status) %></th>
+      <th scope="col"><%= Task.human_attribute_name(:title) %></th>
+      <th scope="col"><%= Task.human_attribute_name(:content) %></th>
+      <th scope="col"><%= Task.human_attribute_name(:created_at) %></th>
+      <th scope="col"><%= link_to Task.human_attribute_name(:deadline_on), tasks_path(deadline_asc_sort: "true") %></th>
+      <th scope="col"><%= link_to Task.human_attribute_name(:priority), tasks_path(priority_high_sort: "true") %></th>
+      <th scope="col"><%= Task.human_attribute_name(:status) %></th>
     </tr>
   </thead>
 
@@ -41,4 +41,4 @@
   </tbody>
 </table>
 
-<%= link_to t('common.back'), admin_users_path, id: "back" %>
+<%= link_to t('common.back'), admin_users_path, id: "back", class:"btn btn-link" %>

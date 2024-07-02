@@ -1,0 +1,28 @@
+<%= form_with(model: @label, local: true, class:"px-4 py-3") do |form| %>
+
+  <div class="mb-3 field">
+    <%= form.label :name, class:"form-label" %>
+    <%= form.text_field :name ,value: "", class:"form-control"%>
+  </div>
+
+  <div class="mb-3 actions">
+    <% if @label.new_record? %>
+      <%= form.submit class:"btn btn-primary" %>
+    <% else %>
+      <%= form.submit class:"btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <% if @label.errors.any? %>
+  <div id="error_explanation"> <%# railsのデフォルトのエラー用スタイルが適用できる。%>
+    <h2><%= pluralize(@label.errors.count, "error") %> prohibited this from being saved:</h2>
+    <ul>
+      <% @label.errors.full_messages.each do |attr, message| %>
+        <li><%= "#{attr} #{message}" %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+<% end %>
+

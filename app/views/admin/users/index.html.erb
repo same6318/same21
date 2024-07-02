@@ -1,12 +1,12 @@
-<h1><%= t('.title') %></h1>
+<h1 class="p-2"><%= t('.title') %></h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th><%= User.human_attribute_name(:name) %></th>
-      <th><%= User.human_attribute_name(:email) %></th>
-      <th><%= User.human_attribute_name(:admin) %></th>
-      <th><%= User.human_attribute_name(:task_count) %></th>
+      <th scope="col"><%= User.human_attribute_name(:name) %></th>
+      <th scope="col"><%= User.human_attribute_name(:email) %></th>
+      <th scope="col"><%= User.human_attribute_name(:admin) %></th>
+      <th scope="col"><%= User.human_attribute_name(:task_count) %></th>
     </tr>
   </thead>
 
@@ -17,9 +17,9 @@
         <td><%= user.email %></td>
         <td><%= user.admin? ? "あり" : "なし" %></td>
         <td><%= user.tasks.count %></td>
-        <td><%= link_to t('common.show'), admin_user_path(user), class: "show-user" %></td>
-        <td><%= link_to t('common.edit'), edit_admin_user_path(user), class: "edit-user" %></td>
-        <td><%= link_to t('common.destroy'), admin_user_path(user), method: :delete, data: { confirm: t('common.confirm_destroy') }, class: "destroy-user" %></td>
+        <td><%= link_to t('common.show'), admin_user_path(user), class: "show-user btn btn-primary" %></td>
+        <td><%= link_to t('common.edit'), edit_admin_user_path(user), class: "edit-user btn btn-primary" %></td>
+        <td><%= link_to t('common.destroy'), admin_user_path(user), method: :delete, data: { confirm: t('common.confirm_destroy') }, class: "destroy-user btn btn-danger" %></td>
       </tr>
     <% end %>
   </tbody>
